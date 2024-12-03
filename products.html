@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Products - Grocery Rental Service</title>
+  <link rel="stylesheet" href="/src/css/style.css">
+  <link rel="stylesheet" href="/src/css/products.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="/" class="nav-brand">GroceryRent</a>
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/products.html">Products</a>
+        <a href="/cart.html">Cart</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </nav>
+  <main class="products-container">
+    <div class="filters">
+      <select id="categoryFilter">
+        <option value="">All Categories</option>
+        <option value="Vegetables">Vegetables</option>
+        <option value="Fruits">Fruits</option>
+        <option value="Essentials">Essentials</option>
+      </select>
+      
+      <div class="price-filter">
+        <label for="priceRange">Max Price:</label>
+        <input type="range" id="priceRange" min="0" max="100" value="100">
+        <span id="priceValue">$100</span>
+      </div>
+    </div>
+
+    <div id="productsGrid" class="products-grid">
+      <!-- Products will be dynamically inserted here -->
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>About Us</h3>
+        <p>GroceryRent is revolutionizing how people access fresh groceries for temporary needs.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="/products.html">Products</a></li>
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul class="footer-links">
+          <li>Email: support@groceryrent.com</li>
+          <li>Phone: (555) 123-4567</li>
+          <li>Address: 123 Grocery St, Food City</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 GroceryRent. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { products } from './src/js/products.js';
+    import { Cart } from './src/js/cart.js';
+    import { initNavigation } from './src/js/navigation.js';
+    
+    // Initialize navigation
+    initNavigation();
+
+    const cart = new Cart();
+    const productsGrid = document.getElementById('productsGrid');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const priceRange = document.getElementById('priceRange');
+
+    function renderProducts(filteredProducts) {
+      productsGrid.innerHTML = filteredProducts.map(product => `
+        <div class="product-card">
+          <img src="${product.image}" alt="${product.name}" class="product-image">
+          <div class="product-info">
+            <h3>${product.name}</h3>
+            <p>${product.description}</p>
+            <p class="price">$${product.price.toFixed(2)}</p>
+            <button class="btn btn-primary" onclick="addToCart(${product.id})">
+              Add to Cart
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterProducts() {
+      const category = categoryFilter.value;
+      const maxPrice = parseFloat(priceRange.value);
+      
+      let filtered = products;
+      
+      if (category) {
+        filtered = filtered.filter(p => p.category === category);
+      }
+      
+      filtered = filtered.filter(p => p.price <= maxPrice);
+      
+      renderProducts(filtered);
+    }
+
+    categoryFilter.addEventListener('change', filterProducts);
+    priceRange.addEventListener('input', (e) => {
+      document.getElementById('priceValue').textContent = `$${e.target.value}`;
+      filterProducts();
+    });
+
+    window.addToCart = (productId) => {
+      const product = products.find(p => p.id === productId);
+      if (product) {
+        cart.addItem(product);
+        alert('Product added to cart!');
+      }
+    };
+
+    // Initial render
+    renderProducts(products);
+  </script>
+</body>
+</html>

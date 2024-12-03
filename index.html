@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GroceryRent - Premium Grocery Rental Service</title>
+  <link rel="stylesheet" href="/src/css/style.css">
+</head>
+<body>
+  <nav class="nav">
+    <div class="nav-container">
+      <a href="/" class="nav-brand">GroceryRent</a>
+      <div class="nav-toggle">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+      <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/products.html">Products</a>
+        <a href="/cart.html">Cart</a>
+        <a href="/about.html">About</a>
+        <a href="/contact.html">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-text">
+        <h1>Fresh Groceries, When You Need Them</h1>
+        <p>Experience the convenience of premium grocery rentals for events, emergencies, or any temporary needs.</p>
+        <br>
+        <br>
+        <a href="/products.html" class="btn btn-primary" style="transform: translateX(20px);">Explore Our Products</a>
+      </div>
+    </div>
+    <div id="heroCarousel"></div>
+  </section>
+
+  <section class="features">
+    <div class="features-container">
+      <h2 class="text-center">Why Choose GroceryRent?</h2>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🌟</div>
+          <h3>Premium Quality</h3>
+          <p>Hand-selected fresh produce and premium groceries, guaranteed to meet your standards.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Quick Delivery</h3>
+          <p>Same-day delivery available for all your urgent grocery rental needs.</p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">♻️</div>
+          <h3>Sustainable Choice</h3>
+          <p>Reduce waste and support environmental sustainability with our rental model.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-section">
+        <h3>About Us</h3>
+        <p>GroceryRent is revolutionizing how people access fresh groceries for temporary needs.</p>
+      </div>
+      <div class="footer-section">
+        <h3>Quick Links</h3>
+        <ul class="footer-links">
+          <li><a href="/products.html">Products</a></li>
+          <li><a href="/about.html">About Us</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h3>Contact</h3>
+        <ul class="footer-links">
+          <li>Email: support@groceryrent.com</li>
+          <li>Phone: (555) 123-4567</li>
+          <li>Address: 123 Grocery St, Food City</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2024 GroceryRent. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <script type="module">
+    import { initNavigation } from './src/js/navigation.js';
+    
+    // Initialize navigation
+    initNavigation();
+    
+    //Carousel code
+    const images = [
+      'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=1920',
+      'https://images.unsplash.com/photo-1543168256-418811576931?auto=format&fit=crop&w=1920',
+      'https://plus.unsplash.com/premium_photo-1664277022311-76d875e7cee5?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+    ];
+
+    const carousel = document.getElementById('heroCarousel');
+    let currentIndex = 0;
+
+    function createCarousel() {
+      images.forEach((src, index) => {
+        const img = document.createElement('img');
+        img.src = src;
+        img.className = `hero-image ${index === 0 ? 'active' : ''}`;
+        carousel.appendChild(img);
+      });
+    }
+
+    function rotateImages() {
+      const imgs = carousel.getElementsByClassName('hero-image');
+      imgs[currentIndex].classList.remove('active');
+      currentIndex = (currentIndex + 1) % images.length;
+      imgs[currentIndex].classList.add('active');
+    }
+
+    createCarousel();
+    setInterval(rotateImages, 5000);
+  </script>
+</body>
+</html>
